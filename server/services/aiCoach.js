@@ -26,8 +26,8 @@ const MODELS_FALLBACK_LIST = [
   'gemini-3.1-flash-lite',
   'gemini-3-flash',
   'gemini-2.5-flash',
-  'gemma-4-26b',
-  'gemma-4-31b',
+  'gemma-4-26b-a4b-it',
+  'gemma-4-31b-it',
 ];
 
 export async function explainMove({
