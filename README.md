@@ -23,52 +23,55 @@
 
 ---
 
-## 🚀 Quick Start
+## 🚀 Quick Start (Docker Compose)
 
-1. Install dependencies:
+This project is intended to be run with Docker Compose. Use the steps below for a Docker-first workflow.
 
-   ```bash
-   npm install
-   ```
+1. Install Docker and Docker Compose (or Docker Desktop which includes Compose).
 
-2. Create a `.env` file in the project root:
+2. In the project root create a `.env` file with required values (example below):
 
    ```env
    TELEGRAM_BOT_TOKEN=your_bot_token
-   MONGO_URI=mongodb://localhost:27017/lichess_ai_coach
+   MONGO_URI=mongodb://mongo:27017/lichess_ai_coach
    PORT=3000
    ENCRYPTION_KEY=your_very_secure_encryption_key
    IS_BOT_ACTIVE=false
    ```
 
-   `IS_BOT_ACTIVE` is required. If it is `false`, the app runs only as a REST API server and skips the Telegram bot and MongoDB connection. If it is `true`, both the bot and MongoDB must be configured correctly.
+   Note: `IS_BOT_ACTIVE` is required. When set to `false` the containers start the REST API server only and skip MongoDB/bot setup; when `true` the bot and MongoDB containers are expected to run and the bot will start.
 
-3. Start the backend:
-
-   ```bash
-   npm run dev
-   ```
-
-   Or for production:
+3. Start the stack:
 
    ```bash
-   npm start
+   docker compose up -d --build
    ```
 
-4. Load the extension:
+4. Check logs and status:
+
+   ```bash
+   docker compose logs -f
+   docker compose ps
+   ```
+
+   The backend API will be available at `http://localhost:3000` (or whatever `PORT` you set).
+
+5. Load the browser extension:
    - Open `chrome://extensions`
    - Enable **Developer mode**
    - Click **Load unpacked**
-   - Select the `extension/` folder, or install the packaged release from the GitHub Releases page
+   - Select the `extension/` folder
+   - Alternatively, download the packaged release from the project's GitHub Releases and install it
 
-5. Configure the extension:
+6. Configure the extension popup:
    - Open the extension popup
    - Paste your Gemini API key
-   - Set the backend URL if needed (`http://localhost:3000` by default)
+   - Verify or update the backend URL (`http://localhost:3000` by default)
    - Save the settings
 
-6. Open Lichess and start a game:
-   - The live analysis widget should appear automatically.
+7. Open Lichess and start a game — the floating analysis widget should appear and process moves.
+
+---
 
 ---
 
