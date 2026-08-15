@@ -154,13 +154,17 @@ REQUIREMENTS:
     // Iterate through models sequentially
     for (const modelName of MODELS_FALLBACK_LIST) {
       try {
+        const isGemini = modelName.startsWith('gemini');
+        
+        const generationConfig = {
+          temperature: 0.3,
+          maxOutputTokens: 70,
+          ...(isGemini && { thinkingConfig: { thinkingBudget: 0 } }),
+        };
+
         const model = genAI.getGenerativeModel({
           model: modelName,
-          generationConfig: {
-            temperature: 0.3,
-            maxOutputTokens: 70,
-            thinkingConfig: { thinkingBudget: 0 },
-          },
+          generationConfig,
         });
 
         const result = await model.generateContent(prompt);
@@ -168,7 +172,7 @@ REQUIREMENTS:
 
         if (comment) break;
       } catch (err) {
-      console.warn(`[AI Coach] Error or model limit for ${modelName}, switching to the next one...`);
+        console.warn(`[AI Coach] Error for ${modelName}:`, err.message || err);
       }
     }
 
