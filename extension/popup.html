@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <style>
+      body {
+        width: 290px;
+        padding: 14px;
+        font-family: Arial, sans-serif;
+        background-color: #1e1e1e;
+        color: #ffffff;
+        margin: 0;
+      }
+      h3 {
+        margin: 0 0 12px 0;
+        font-size: 15px;
+        color: #38bdf8;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .toggle-group {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: #2a2a2a;
+        padding: 8px 10px;
+        border-radius: 6px;
+        margin-bottom: 12px;
+        border: 1px solid #333;
+      }
+      .toggle-label {
+        font-size: 12px;
+        font-weight: bold;
+        color: #ddd;
+      }
+      .switch {
+        position: relative;
+        display: inline-block;
+        width: 40px;
+        height: 20px;
+      }
+      .switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+      }
+      .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #444;
+        transition: 0.2s;
+        border-radius: 20px;
+      }
+      .slider:before {
+        position: absolute;
+        content: '';
+        height: 14px;
+        width: 14px;
+        left: 3px;
+        bottom: 3px;
+        background-color: white;
+        transition: 0.2s;
+        border-radius: 50%;
+      }
+      input:checked + .slider {
+        background-color: #38bdf8;
+      }
+      input:checked + .slider:before {
+        transform: translateX(20px);
+      }
+      .field {
+        margin-bottom: 10px;
+      }
+      label {
+        display: block;
+        font-size: 11px;
+        margin-bottom: 4px;
+        color: #aaa;
+      }
+      input[type='password'],
+      input[type='text'] {
+        width: 100%;
+        padding: 7px;
+        box-sizing: border-box;
+        border: 1px solid #444;
+        border-radius: 4px;
+        background: #2a2a2a;
+        color: #fff;
+        font-size: 12px;
+      }
+      .server-actions {
+        display: flex;
+        gap: 6px;
+        margin-top: 5px;
+      }
+      .btn-secondary {
+        background: #3f3f46;
+        padding: 5px;
+        font-size: 11px;
+        width: auto;
+        flex: 1;
+      }
+      .btn-secondary:hover {
+        background: #52525b;
+      }
+      button {
+        width: 100%;
+        padding: 8px;
+        background: #2563eb;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-weight: bold;
+        font-size: 12px;
+        transition: background 0.2s;
+      }
+      button:hover {
+        background: #1d4ed8;
+      }
+      #status {
+        margin-top: 8px;
+        font-size: 12px;
+        text-align: center;
+        min-height: 16px;
+      }
+    </style>
+  </head>
+  <body>
+    <h3>♟ Lichess AI Coach</h3>
+
+    <div class="toggle-group">
+      <span class="toggle-label" id="toggleLabel">Analyze moves:</span>
+      <label class="switch">
+        <input type="checkbox" id="extensionToggle" checked />
+        <span class="slider"></span>
+      </label>
+    </div>
+
+    <div class="field">
+      <label for="serverUrl" id="serverUrlLabel">Backend Server URL:</label>
+      <input type="text" id="serverUrl" placeholder="http://localhost:3000" />
+      <div class="server-actions">
+        <button type="button" id="resetServerBtn" class="btn-secondary">Reset to default</button>
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="languageSelect" id="languageLabel">Language:</label>
+      <select id="languageSelect" style="width: 100%; padding: 7px; box-sizing: border-box; border: 1px solid #444; border-radius: 4px; background: #2a2a2a; color: #fff; font-size: 12px;">
+        <option value="browser">Browser default</option>
+        <option value="en">English</option>
+        <option value="uk">Українська</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label for="apiKey" id="apiKeyLabel">Gemini API Key:</label>
+      <input type="password" id="apiKey" placeholder="AIzaSy..." />
+    </div>
+
+    <button id="saveBtn">Save settings</button>
+    <div id="status"></div>
+
+    <script src="config.js"></script>
+    <script src="popup.js"></script>
+  </body>
+</html>

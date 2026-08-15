@@ -1,0 +1,12 @@
+services:
+  lichess_ai:
+    build: .
+    container_name: lichess_ai
+    restart: always
+    ports:
+      - '${PORT:-3000}:${PORT:-3000}'
+    environment:
+      TELEGRAM_BOT_TOKEN: ${TELEGRAM_BOT_TOKEN}
+      PORT: ${PORT:-3000}
+      ENCRYPTION_KEY: ${ENCRYPTION_KEY}
+      MONGO_URI: ${MONGO_URI}
