@@ -126,28 +126,16 @@ export async function explainMove({
 
     const prompt =
       lang === 'en'
-        ? `You are a fast chess coach. The student is playing as ${playerColor === 'white' ? 'WHITE' : 'BLACK'}.
-Move: ${fullMoveText} (${sideText}).
-Action: ${moveDetailsText}.
-Evaluation: ${evalAfter > 0 ? '+' + evalAfter : evalAfter} (${leadText}).
-Quality: ${moveQuality}.
-Student pieces: ${myPieces.join(', ')}.
-
-REQUIREMENTS:
-1. No preamble, no thinking, no introduction. Give only a direct answer.
-2. Explain the point or mistake of the move in at most 1-2 short sentences in English.
-3. Do not provide exact coordinates for alternative moves (d5, Nf3, etc.), suggest general ideas only.`
-        : `Ти — швидкий шаховий тренер. Учень грає за ${playerColor === 'white' ? 'БІЛИХ' : 'ЧОРНИХ'}.
-Хід: ${fullMoveText} (${sideText}).
-Дія: ${moveDetailsText}.
-Оцінка: ${evalAfter > 0 ? '+' + evalAfter : evalAfter} (${leadText}).
-Якість: ${moveQuality}.
-Фігури учня: ${myPieces.join(', ')}.
-
-ВИМОГИ:
-1. Без жодних преамбул, роздумів чи вступу. Дай тільки пряму відповідь.
-2. Поясни суть або помилку ходу максимум у 1-2 коротких реченнях українською мовою.
-3. Не пиши точні координати альтернативних ходів (d5, Nf3 тощо), радь загальні ідеї.`;
+        ? `Task: Act as a chess coach. Give a 1-2 sentence direct explanation of this move. Do not repeat the input or add any intro.
+    Player: ${playerColor === 'white' ? 'WHITE' : 'BLACK'} (${sideText})
+    Move: ${fullMoveText} (${moveDetailsText})
+    Evaluation: ${evalAfter > 0 ? '+' + evalAfter : evalAfter} (${leadText}, ${moveQuality})
+    Coach comment:`
+        : `Завдання: Дій як шаховий тренер. Поясни суть або помилку цього ходу в 1-2 коротких реченнях. Не повторюй вхідні дані і не пиши вступних слів.
+    Гравець: ${playerColor === 'white' ? 'БІЛІ' : 'ЧОРНІ'} (${sideText})
+    Хід: ${fullMoveText} (${moveDetailsText})
+    Оцінка: ${evalAfter > 0 ? '+' + evalAfter : evalAfter} (${leadText}, ${moveQuality})
+    Коментар тренера:`;
 
     let comment = '';
 
@@ -155,10 +143,10 @@ REQUIREMENTS:
     for (const modelName of MODELS_FALLBACK_LIST) {
       try {
         const isGemini = modelName.startsWith('gemini');
-        
+
         const generationConfig = {
-          temperature: 0.3,
-          maxOutputTokens: 70,
+          temperature: 0.2,
+          maxOutputTokens: 150,
           ...(isGemini && { thinkingConfig: { thinkingBudget: 0 } }),
         };
 
