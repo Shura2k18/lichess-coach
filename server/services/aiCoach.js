@@ -260,96 +260,25 @@ function reconstructFenBefore(fenAfter, lastMoveObj) {
  * return a partial generation such as "Ц" or "чень)".
  */
 function cleanComment(text, language) {
-  if (!text) {
-    return '';
-  }
+  if (!text) return '';
 
   let comment = String(text)
     .replace(/```(?:text|markdown)?/gi, '')
     .replace(/```/g, '')
     .trim();
 
-  /*
-   * Remove common meta prefixes.
-   */
+  // Прибираємо префікси відповідей
+  comment = comment.replace(/^(?:answer|response|відповідь|comment|коментар)\s*:\s*/i, '').trim();
+
+  // Видаляємо обірвані на кінці незавершені фрази на зразок "28..." або "Краще грати"
   comment = comment
-    .replace(/^(?:answer|response|відповідь)\s*:\s*/i, '')
-    .replace(/^(?:comment|коментар)\s*:\s*/i, '')
+    .replace(/(?:краще(?: було б)? грати|better was to play)\s*\d+\.{1,3}\s*$/iu, '')
     .trim();
 
-  /*
-   * Remove lines that look like model metadata.
-   */
-  const lines = comment
-    .split(/\r?\n/)
-    .map((line) => line.trim())
-    .filter(Boolean)
-    .filter(
-      (line) =>
-        !/^(role|task|language|context|requirements?|answer|відповідь|завдання|контекст|вимоги)\s*:/i.test(
-          line
-        )
-    );
-
-  if (lines.length) {
-    comment = lines.join(' ');
-  }
-
-  /*
-   * Remove accidental quotation marks.
-   */
-  comment = comment.replace(/^['"«]+|['"»]+$/g, '').trim();
-
-  /*
-   * Reject obviously broken / partial responses.
-   *
-   * A useful chess explanation should contain at least
-   * a reasonable amount of text.
-   */
-  const normalized = comment.replace(/[^\p{L}\p{N}]/gu, '').trim();
-
-  if (normalized.length < 12) {
-    return '';
-  }
-
-  /*
-   * Reject obvious meta responses.
-   */
-  const lower = comment.toLowerCase();
-
-  const metaMarkers = [
-    'role:',
-    'task:',
-    'language:',
-    'context:',
-    'requirements:',
-    'role -',
-    'task -',
-    'context -',
-  ];
-
-  const metaCount = metaMarkers.filter((marker) => lower.includes(marker)).length;
-
-  if (metaCount >= 2) {
-    return '';
-  }
-
-  /*
-   * Keep maximum two sentences.
-   */
+  // Залишаємо тільки повні завершені речення (до 2 штук)
   const sentences = comment.match(/[^.!?]+[.!?]+(?:\s|$)/g);
-
-  if (sentences && sentences.length > 2) {
+  if (sentences && sentences.length > 0) {
     comment = sentences.slice(0, 2).join(' ').trim();
-  }
-
-  /*
-   * Remove accidental language labels.
-   */
-  if (language === 'uk') {
-    comment = comment.replace(/^українською(?: мовою)?\s*[:\-]?\s*/i, '').trim();
-  } else {
-    comment = comment.replace(/^in english\s*[:\-]?\s*/i, '').trim();
   }
 
   return comment;
@@ -543,7 +472,7 @@ function isClearlyBrokenResponse(text) {
 async function generateWithModel({ ai, modelName, systemInstruction, userPrompt }) {
   const config = {
     systemInstruction,
-    maxOutputTokens: 120,
+    maxOutputTokens: 250,
   };
 
   /*
