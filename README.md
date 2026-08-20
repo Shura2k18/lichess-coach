@@ -41,6 +41,12 @@ This project is intended to be run with Docker Compose. Use the steps below for 
 
    Note: `IS_BOT_ACTIVE` is required. When set to `false` the containers start the REST API server only and skip MongoDB/bot setup; when `true` the bot and MongoDB containers are expected to run and the bot will start.
 
+   If you plan to use the Telegram bot, you also need a Lichess personal API token. When creating it in Lichess, enable the permissions:
+   - `challenge:read`
+   - `board:play`
+
+   Warning: the Lichess token is displayed only once. If you do not save it immediately, you will need to create a new token.
+
 3. Start the stack:
 
    ```bash
@@ -84,6 +90,12 @@ Required variables for the backend:
 - `PORT` — backend port
 - `ENCRYPTION_KEY` — encryption key for storing sensitive data
 - `IS_BOT_ACTIVE` — required startup flag that turns the bot and MongoDB initialization on or off
+
+When using the Telegram bot, you must also provide a Lichess API token with the required permissions:
+- `challenge:read`
+- `board:play`
+
+The Lichess token is displayed only once. If it is not saved immediately, a new token must be generated.
 
 If you do not run the Telegram bot, set:
 
