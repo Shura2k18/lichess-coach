@@ -11,7 +11,7 @@
 - **Node.js** & **Express** — server-side handling of requests from the extension.
 - **Stockfish Engine** — local chess engine for fast and accurate FEN evaluation and position scoring (CP / Mate).
 - **Chess.js** — move validation, board simulation, and reconstruction of game history.
-- **@google/generative-ai** — integration with the `gemini-3.1-flash-lite` model for short coaching suggestions.
+- **@google/genai** — integration with the gemini and gemma models for short coaching suggestions.
 - **MongoDB** — database for storing system logs and analytics.
 - **Docker & Docker Compose** — isolated deployment environment with the Stockfish binary.
 
@@ -74,39 +74,13 @@ This project is intended to be run with Docker Compose. Use the steps below for 
 6. Configure the extension popup:
    - Open the extension popup
    - Paste your Gemini API key
-   - Verify or update the backend URL (`http://localhost:3000` by default)
+   - Verify or update the backend URL, the default backend server is `https://lichess-coach.onrender.com`, but you can change it to your own
    - Save the settings
+   - For the browser extension, the default backend server is `https://lichess-coach.onrender.com`.
 
-7. Open Lichess and start a game — the floating analysis widget should appear and process moves.
+7. Configure the telegram bot:
+   - When using the Telegram bot, you must also provide a Lichess API token with the required permissions: `challenge:read` and `board:play`
+   - This token must be inserted into the bot together with the Gemini API key. A sample bot for testing is `@lichess_api_learning_bot`
+   - The Lichess token is displayed only once. If it is not saved immediately, a new token must be generated
 
----
-
----
-
-## 🔐 Environment variables
-
-Required variables for the backend:
-
-- `TELEGRAM_BOT_TOKEN` — Telegram bot token for the bot UI and game tracking
-- `MONGO_URI` — MongoDB connection string
-- `PORT` — backend port
-- `ENCRYPTION_KEY` — encryption key for storing sensitive data
-- `IS_BOT_ACTIVE` — required startup flag that turns the bot and MongoDB initialization on or off
-
-When using the Telegram bot, you must also provide a Lichess API token with the required permissions:
-- `challenge:read`
-- `board:play`
-
-This token must be inserted into the bot together with the Gemini API key. A sample bot for testing is `@lichess_api_learning_bot`.
-
-The Lichess token is displayed only once. If it is not saved immediately, a new token must be generated.
-
-For the browser extension, the default backend server is `https://lichess-coach.onrender.com`.
-
-If you do not run the Telegram bot, set:
-
-```env
-IS_BOT_ACTIVE=false
-```
-
-This keeps the REST API server running while disabling the bot and skipping MongoDB connection.
+8. Open Lichess and start a game—a floating analysis widget should appear to process the moves, and you'll receive notifications from the bot.

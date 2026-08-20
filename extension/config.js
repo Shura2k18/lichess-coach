@@ -1,1 +1,1 @@
-window.DEFAULT_SERVER_URL = 'http://localhost:3000';
+window.DEFAULT_SERVER_URL = 'https://lichess-coach.onrender.com/';
