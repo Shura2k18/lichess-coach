@@ -45,6 +45,8 @@ This project is intended to be run with Docker Compose. Use the steps below for 
    - `challenge:read`
    - `board:play`
 
+   This token must be inserted into the Telegram bot together with the Gemini API key. As a ready-made example bot, you can try `@lichess_api_learning_bot`.
+
    Warning: the Lichess token is displayed only once. If you do not save it immediately, you will need to create a new token.
 
 3. Start the stack:
@@ -95,7 +97,11 @@ When using the Telegram bot, you must also provide a Lichess API token with the 
 - `challenge:read`
 - `board:play`
 
+This token must be inserted into the bot together with the Gemini API key. A sample bot for testing is `@lichess_api_learning_bot`.
+
 The Lichess token is displayed only once. If it is not saved immediately, a new token must be generated.
+
+For the browser extension, the default backend server is `https://lichess-coach.onrender.com`.
 
 If you do not run the Telegram bot, set:
 
